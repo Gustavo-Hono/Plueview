@@ -1,0 +1,38 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider     = "prisma-client-js"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Station {
+  id         Int            @id @default(autoincrement())
+  name       String // Ex: "Pompeia - Lote A" ou "Estação 01"
+  macAddress String         @unique // Útil para identificar o ESP32 único
+  readings   DataPlueView[] // Relação inversa
+}
+
+model DataPlueView {
+  id                     Int      @id @default(autoincrement())
+  time                   DateTime
+  battery                Int
+  ConsumoPluviometro     Float?
+  ConsumoVelocidadeVento Float?
+  ConsumoDirecaoVento    Float?
+  ConsumoTemperatura     Float?
+  ConsumoUmidade         Float?
+
+  stationId Int
+  station   Station @relation(fields: [stationId], references: [id])
+
+  @@index([time(sort: Desc)])
+}
