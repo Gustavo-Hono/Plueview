@@ -1,0 +1,10 @@
+export enum WindDirection {
+  NORTE = 'NORTE',
+  NORDESTE = 'NORDESTE',
+  LESTE = 'LESTE',
+  SUDESTE = 'SUDESTE',
+  SUL = 'SUL',
+  SUDOESTE = 'SUDOESTE',
+  OESTE = 'OESTE',
+  NOROESTE = 'NOROESTE',
+}

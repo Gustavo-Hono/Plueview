@@ -110,6 +110,17 @@ exports.Prisma.DataPlueViewScalarFieldEnum = {
   stationId: 'stationId'
 };
 
+exports.Prisma.WeatherDataScalarFieldEnum = {
+  id: 'id',
+  umidade: 'umidade',
+  temperatura: 'temperatura',
+  velocidadeVento: 'velocidadeVento',
+  direcaoVento: 'direcaoVento',
+  quantidadeChuva: 'quantidadeChuva',
+  dataMedicao: 'dataMedicao',
+  stationId: 'stationId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -124,11 +135,21 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-
+exports.WindDirection = exports.$Enums.WindDirection = {
+  NORTE: 'NORTE',
+  NORDESTE: 'NORDESTE',
+  LESTE: 'LESTE',
+  SUDESTE: 'SUDESTE',
+  SUL: 'SUL',
+  SUDOESTE: 'SUDOESTE',
+  OESTE: 'OESTE',
+  NOROESTE: 'NOROESTE'
+};
 
 exports.Prisma.ModelName = {
   Station: 'Station',
-  DataPlueView: 'DataPlueView'
+  DataPlueView: 'DataPlueView',
+  WeatherData: 'WeatherData'
 };
 /**
  * Create the Client
@@ -138,10 +159,10 @@ const config = {
   "clientVersion": "7.2.0",
   "engineVersion": "0c8ef2ce45c83248ab3df073180d5eda9e8be7a3",
   "activeProvider": "postgresql",
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider     = \"prisma-client-js\"\n  output       = \"../src/generated/prisma\"\n  moduleFormat = \"cjs\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel Station {\n  id         Int            @id @default(autoincrement())\n  name       String // Ex: \"Pompeia - Lote A\" ou \"Estação 01\"\n  macAddress String         @unique // Útil para identificar o ESP32 único\n  readings   DataPlueView[] // Relação inversa\n}\n\nmodel DataPlueView {\n  id                     Int      @id @default(autoincrement())\n  time                   DateTime\n  battery                Int\n  ConsumoPluviometro     Float?\n  ConsumoVelocidadeVento Float?\n  ConsumoDirecaoVento    Float?\n  ConsumoTemperatura     Float?\n  ConsumoUmidade         Float?\n\n  stationId Int\n  station   Station @relation(fields: [stationId], references: [id])\n\n  @@index([time(sort: Desc)])\n}\n"
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider     = \"prisma-client-js\"\n  output       = \"../src/generated/prisma\"\n  moduleFormat = \"cjs\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel Station {\n  id         Int    @id @default(autoincrement())\n  name       String\n  macAddress String @unique\n\n  readings    DataPlueView[]\n  weatherData WeatherData[]\n}\n\n/**\n * =========================\n * Leituras brutas\n * =========================\n */\nmodel DataPlueView {\n  id      Int      @id @default(autoincrement())\n  time    DateTime @default(now())\n  battery Int\n\n  ConsumoPluviometro     Float?\n  ConsumoVelocidadeVento Float?\n  ConsumoDirecaoVento    Float?\n  ConsumoTemperatura     Float?\n  ConsumoUmidade         Float?\n\n  stationId Int\n  station   Station @relation(fields: [stationId], references: [id], onDelete: Cascade)\n\n  @@index([time(sort: Desc)])\n}\n\n/**\n * =========================\n * Enum direção do vento\n * =========================\n */\nenum WindDirection {\n  NORTE\n  NORDESTE\n  LESTE\n  SUDESTE\n  SUL\n  SUDOESTE\n  OESTE\n  NOROESTE\n}\n\n/**\n * =========================\n * Dados meteorológicos\n * =========================\n */\nmodel WeatherData {\n  id Int @id @default(autoincrement())\n\n  umidade         Float\n  temperatura     Float\n  velocidadeVento Float\n  direcaoVento    WindDirection\n  quantidadeChuva Float\n\n  dataMedicao DateTime @default(now())\n\n  stationId Int\n  station   Station @relation(fields: [stationId], references: [id], onDelete: Cascade)\n\n  @@index([dataMedicao(sort: Desc)])\n  @@map(\"weather_data\")\n}\n"
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Station\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"macAddress\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"readings\",\"kind\":\"object\",\"type\":\"DataPlueView\",\"relationName\":\"DataPlueViewToStation\"}],\"dbName\":null},\"DataPlueView\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"time\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"battery\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"ConsumoPluviometro\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"ConsumoVelocidadeVento\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"ConsumoDirecaoVento\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"ConsumoTemperatura\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"ConsumoUmidade\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"stationId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"station\",\"kind\":\"object\",\"type\":\"Station\",\"relationName\":\"DataPlueViewToStation\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Station\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"macAddress\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"readings\",\"kind\":\"object\",\"type\":\"DataPlueView\",\"relationName\":\"DataPlueViewToStation\"},{\"name\":\"weatherData\",\"kind\":\"object\",\"type\":\"WeatherData\",\"relationName\":\"StationToWeatherData\"}],\"dbName\":null},\"DataPlueView\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"time\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"battery\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"ConsumoPluviometro\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"ConsumoVelocidadeVento\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"ConsumoDirecaoVento\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"ConsumoTemperatura\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"ConsumoUmidade\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"stationId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"station\",\"kind\":\"object\",\"type\":\"Station\",\"relationName\":\"DataPlueViewToStation\"}],\"dbName\":null},\"WeatherData\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"umidade\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"temperatura\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"velocidadeVento\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"direcaoVento\",\"kind\":\"enum\",\"type\":\"WindDirection\"},{\"name\":\"quantidadeChuva\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"dataMedicao\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"stationId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"station\",\"kind\":\"object\",\"type\":\"Station\",\"relationName\":\"StationToWeatherData\"}],\"dbName\":\"weather_data\"}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.compilerWasm = {
   getRuntime: async () => require('./query_compiler_bg.js'),

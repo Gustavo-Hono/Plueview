@@ -15,24 +15,65 @@ datasource db {
 }
 
 model Station {
-  id          Int            @id @default(autoincrement())
-  name        String         // Ex: "Pompeia - Lote A" ou "Estação 01"
-  macAddress  String         @unique // Útil para identificar o ESP32 único
-  readings    DataPlueView[] // Relação inversa
+  id          Int             @id @default(autoincrement())
+  name        String
+  macAddress  String          @unique
+
+  readings    DataPlueView[]
+  weatherData WeatherData[]
 }
 
+/* =========================
+   Leituras brutas
+========================= */
 model DataPlueView {
   id                     Int      @id @default(autoincrement())
-  time                   DateTime 
+  time                   DateTime @default(now())
   battery                Int
+
   ConsumoPluviometro     Float?
   ConsumoVelocidadeVento Float?
   ConsumoDirecaoVento    Float?
   ConsumoTemperatura     Float?
   ConsumoUmidade         Float?
-  
+
   stationId              Int
-  station                Station  @relation(fields: [stationId], references: [id])
+  station                Station  @relation(fields: [stationId], references: [id], onDelete: Cascade)
 
   @@index([time(sort: Desc)])
+}
+
+/* =========================
+   Enum direção do vento
+========================= */
+enum WindDirection {
+  NORTE
+  NORDESTE
+  LESTE
+  SUDESTE
+  SUL
+  SUDOESTE
+  OESTE
+  NOROESTE
+}
+
+/* =========================
+   Dados meteorológicos
+========================= */
+model WeatherData {
+  id               Int        @id @default(autoincrement())
+
+  umidade          Float
+  temperatura      Float
+  velocidadeVento  Float
+  direcaoVento     WindDirection
+  quantidadeChuva  Float
+
+  dataMedicao      DateTime      @default(now())
+
+  stationId        Int
+  station          Station      @relation(fields: [stationId], references: [id], onDelete: Cascade)
+
+  @@index([dataMedicao(sort: Desc)])
+  @@map("weather_data")
 }

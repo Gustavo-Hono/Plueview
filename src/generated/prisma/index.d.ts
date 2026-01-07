@@ -20,9 +20,41 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 export type Station = $Result.DefaultSelection<Prisma.$StationPayload>
 /**
  * Model DataPlueView
- * 
+ * =========================
+ *    Leituras brutas
+ * =========================
  */
 export type DataPlueView = $Result.DefaultSelection<Prisma.$DataPlueViewPayload>
+/**
+ * Model WeatherData
+ * =========================
+ *    Dados meteorológicos
+ * =========================
+ */
+export type WeatherData = $Result.DefaultSelection<Prisma.$WeatherDataPayload>
+
+/**
+ * Enums
+ */
+export namespace $Enums {
+  export const WindDirection: {
+  NORTE: 'NORTE',
+  NORDESTE: 'NORDESTE',
+  LESTE: 'LESTE',
+  SUDESTE: 'SUDESTE',
+  SUL: 'SUL',
+  SUDOESTE: 'SUDOESTE',
+  OESTE: 'OESTE',
+  NOROESTE: 'NOROESTE'
+};
+
+export type WindDirection = (typeof WindDirection)[keyof typeof WindDirection]
+
+}
+
+export type WindDirection = $Enums.WindDirection
+
+export const WindDirection: typeof $Enums.WindDirection
 
 /**
  * ##  Prisma Client ʲˢ
@@ -160,6 +192,16 @@ export class PrismaClient<
     * ```
     */
   get dataPlueView(): Prisma.DataPlueViewDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.weatherData`: Exposes CRUD operations for the **WeatherData** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more WeatherData
+    * const weatherData = await prisma.weatherData.findMany()
+    * ```
+    */
+  get weatherData(): Prisma.WeatherDataDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -595,7 +637,8 @@ export namespace Prisma {
 
   export const ModelName: {
     Station: 'Station',
-    DataPlueView: 'DataPlueView'
+    DataPlueView: 'DataPlueView',
+    WeatherData: 'WeatherData'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -611,7 +654,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "station" | "dataPlueView"
+      modelProps: "station" | "dataPlueView" | "weatherData"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -763,6 +806,80 @@ export namespace Prisma {
           }
         }
       }
+      WeatherData: {
+        payload: Prisma.$WeatherDataPayload<ExtArgs>
+        fields: Prisma.WeatherDataFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.WeatherDataFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WeatherDataPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.WeatherDataFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WeatherDataPayload>
+          }
+          findFirst: {
+            args: Prisma.WeatherDataFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WeatherDataPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.WeatherDataFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WeatherDataPayload>
+          }
+          findMany: {
+            args: Prisma.WeatherDataFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WeatherDataPayload>[]
+          }
+          create: {
+            args: Prisma.WeatherDataCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WeatherDataPayload>
+          }
+          createMany: {
+            args: Prisma.WeatherDataCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.WeatherDataCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WeatherDataPayload>[]
+          }
+          delete: {
+            args: Prisma.WeatherDataDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WeatherDataPayload>
+          }
+          update: {
+            args: Prisma.WeatherDataUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WeatherDataPayload>
+          }
+          deleteMany: {
+            args: Prisma.WeatherDataDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.WeatherDataUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.WeatherDataUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WeatherDataPayload>[]
+          }
+          upsert: {
+            args: Prisma.WeatherDataUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WeatherDataPayload>
+          }
+          aggregate: {
+            args: Prisma.WeatherDataAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateWeatherData>
+          }
+          groupBy: {
+            args: Prisma.WeatherDataGroupByArgs<ExtArgs>
+            result: $Utils.Optional<WeatherDataGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.WeatherDataCountArgs<ExtArgs>
+            result: $Utils.Optional<WeatherDataCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -873,6 +990,7 @@ export namespace Prisma {
   export type GlobalOmitConfig = {
     station?: StationOmit
     dataPlueView?: DataPlueViewOmit
+    weatherData?: WeatherDataOmit
   }
 
   /* Types for Logging */
@@ -954,10 +1072,12 @@ export namespace Prisma {
 
   export type StationCountOutputType = {
     readings: number
+    weatherData: number
   }
 
   export type StationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     readings?: boolean | StationCountOutputTypeCountReadingsArgs
+    weatherData?: boolean | StationCountOutputTypeCountWeatherDataArgs
   }
 
   // Custom InputTypes
@@ -976,6 +1096,13 @@ export namespace Prisma {
    */
   export type StationCountOutputTypeCountReadingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DataPlueViewWhereInput
+  }
+
+  /**
+   * StationCountOutputType without action
+   */
+  export type StationCountOutputTypeCountWeatherDataArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WeatherDataWhereInput
   }
 
 
@@ -1166,6 +1293,7 @@ export namespace Prisma {
     name?: boolean
     macAddress?: boolean
     readings?: boolean | Station$readingsArgs<ExtArgs>
+    weatherData?: boolean | Station$weatherDataArgs<ExtArgs>
     _count?: boolean | StationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["station"]>
 
@@ -1190,6 +1318,7 @@ export namespace Prisma {
   export type StationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "macAddress", ExtArgs["result"]["station"]>
   export type StationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     readings?: boolean | Station$readingsArgs<ExtArgs>
+    weatherData?: boolean | Station$weatherDataArgs<ExtArgs>
     _count?: boolean | StationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type StationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1199,6 +1328,7 @@ export namespace Prisma {
     name: "Station"
     objects: {
       readings: Prisma.$DataPlueViewPayload<ExtArgs>[]
+      weatherData: Prisma.$WeatherDataPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -1599,6 +1729,7 @@ export namespace Prisma {
   export interface Prisma__StationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     readings<T extends Station$readingsArgs<ExtArgs> = {}>(args?: Subset<T, Station$readingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DataPlueViewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    weatherData<T extends Station$weatherDataArgs<ExtArgs> = {}>(args?: Subset<T, Station$weatherDataArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WeatherDataPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2040,6 +2171,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DataPlueViewScalarFieldEnum | DataPlueViewScalarFieldEnum[]
+  }
+
+  /**
+   * Station.weatherData
+   */
+  export type Station$weatherDataArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WeatherData
+     */
+    select?: WeatherDataSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WeatherData
+     */
+    omit?: WeatherDataOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WeatherDataInclude<ExtArgs> | null
+    where?: WeatherDataWhereInput
+    orderBy?: WeatherDataOrderByWithRelationInput | WeatherDataOrderByWithRelationInput[]
+    cursor?: WeatherDataWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: WeatherDataScalarFieldEnum | WeatherDataScalarFieldEnum[]
   }
 
   /**
@@ -3234,6 +3389,1157 @@ export namespace Prisma {
 
 
   /**
+   * Model WeatherData
+   */
+
+  export type AggregateWeatherData = {
+    _count: WeatherDataCountAggregateOutputType | null
+    _avg: WeatherDataAvgAggregateOutputType | null
+    _sum: WeatherDataSumAggregateOutputType | null
+    _min: WeatherDataMinAggregateOutputType | null
+    _max: WeatherDataMaxAggregateOutputType | null
+  }
+
+  export type WeatherDataAvgAggregateOutputType = {
+    id: number | null
+    umidade: number | null
+    temperatura: number | null
+    velocidadeVento: number | null
+    quantidadeChuva: number | null
+    stationId: number | null
+  }
+
+  export type WeatherDataSumAggregateOutputType = {
+    id: number | null
+    umidade: number | null
+    temperatura: number | null
+    velocidadeVento: number | null
+    quantidadeChuva: number | null
+    stationId: number | null
+  }
+
+  export type WeatherDataMinAggregateOutputType = {
+    id: number | null
+    umidade: number | null
+    temperatura: number | null
+    velocidadeVento: number | null
+    direcaoVento: $Enums.WindDirection | null
+    quantidadeChuva: number | null
+    dataMedicao: Date | null
+    stationId: number | null
+  }
+
+  export type WeatherDataMaxAggregateOutputType = {
+    id: number | null
+    umidade: number | null
+    temperatura: number | null
+    velocidadeVento: number | null
+    direcaoVento: $Enums.WindDirection | null
+    quantidadeChuva: number | null
+    dataMedicao: Date | null
+    stationId: number | null
+  }
+
+  export type WeatherDataCountAggregateOutputType = {
+    id: number
+    umidade: number
+    temperatura: number
+    velocidadeVento: number
+    direcaoVento: number
+    quantidadeChuva: number
+    dataMedicao: number
+    stationId: number
+    _all: number
+  }
+
+
+  export type WeatherDataAvgAggregateInputType = {
+    id?: true
+    umidade?: true
+    temperatura?: true
+    velocidadeVento?: true
+    quantidadeChuva?: true
+    stationId?: true
+  }
+
+  export type WeatherDataSumAggregateInputType = {
+    id?: true
+    umidade?: true
+    temperatura?: true
+    velocidadeVento?: true
+    quantidadeChuva?: true
+    stationId?: true
+  }
+
+  export type WeatherDataMinAggregateInputType = {
+    id?: true
+    umidade?: true
+    temperatura?: true
+    velocidadeVento?: true
+    direcaoVento?: true
+    quantidadeChuva?: true
+    dataMedicao?: true
+    stationId?: true
+  }
+
+  export type WeatherDataMaxAggregateInputType = {
+    id?: true
+    umidade?: true
+    temperatura?: true
+    velocidadeVento?: true
+    direcaoVento?: true
+    quantidadeChuva?: true
+    dataMedicao?: true
+    stationId?: true
+  }
+
+  export type WeatherDataCountAggregateInputType = {
+    id?: true
+    umidade?: true
+    temperatura?: true
+    velocidadeVento?: true
+    direcaoVento?: true
+    quantidadeChuva?: true
+    dataMedicao?: true
+    stationId?: true
+    _all?: true
+  }
+
+  export type WeatherDataAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which WeatherData to aggregate.
+     */
+    where?: WeatherDataWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WeatherData to fetch.
+     */
+    orderBy?: WeatherDataOrderByWithRelationInput | WeatherDataOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: WeatherDataWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WeatherData from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WeatherData.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned WeatherData
+    **/
+    _count?: true | WeatherDataCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: WeatherDataAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: WeatherDataSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: WeatherDataMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: WeatherDataMaxAggregateInputType
+  }
+
+  export type GetWeatherDataAggregateType<T extends WeatherDataAggregateArgs> = {
+        [P in keyof T & keyof AggregateWeatherData]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateWeatherData[P]>
+      : GetScalarType<T[P], AggregateWeatherData[P]>
+  }
+
+
+
+
+  export type WeatherDataGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WeatherDataWhereInput
+    orderBy?: WeatherDataOrderByWithAggregationInput | WeatherDataOrderByWithAggregationInput[]
+    by: WeatherDataScalarFieldEnum[] | WeatherDataScalarFieldEnum
+    having?: WeatherDataScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: WeatherDataCountAggregateInputType | true
+    _avg?: WeatherDataAvgAggregateInputType
+    _sum?: WeatherDataSumAggregateInputType
+    _min?: WeatherDataMinAggregateInputType
+    _max?: WeatherDataMaxAggregateInputType
+  }
+
+  export type WeatherDataGroupByOutputType = {
+    id: number
+    umidade: number
+    temperatura: number
+    velocidadeVento: number
+    direcaoVento: $Enums.WindDirection
+    quantidadeChuva: number
+    dataMedicao: Date
+    stationId: number
+    _count: WeatherDataCountAggregateOutputType | null
+    _avg: WeatherDataAvgAggregateOutputType | null
+    _sum: WeatherDataSumAggregateOutputType | null
+    _min: WeatherDataMinAggregateOutputType | null
+    _max: WeatherDataMaxAggregateOutputType | null
+  }
+
+  type GetWeatherDataGroupByPayload<T extends WeatherDataGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<WeatherDataGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof WeatherDataGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], WeatherDataGroupByOutputType[P]>
+            : GetScalarType<T[P], WeatherDataGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type WeatherDataSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    umidade?: boolean
+    temperatura?: boolean
+    velocidadeVento?: boolean
+    direcaoVento?: boolean
+    quantidadeChuva?: boolean
+    dataMedicao?: boolean
+    stationId?: boolean
+    station?: boolean | StationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["weatherData"]>
+
+  export type WeatherDataSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    umidade?: boolean
+    temperatura?: boolean
+    velocidadeVento?: boolean
+    direcaoVento?: boolean
+    quantidadeChuva?: boolean
+    dataMedicao?: boolean
+    stationId?: boolean
+    station?: boolean | StationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["weatherData"]>
+
+  export type WeatherDataSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    umidade?: boolean
+    temperatura?: boolean
+    velocidadeVento?: boolean
+    direcaoVento?: boolean
+    quantidadeChuva?: boolean
+    dataMedicao?: boolean
+    stationId?: boolean
+    station?: boolean | StationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["weatherData"]>
+
+  export type WeatherDataSelectScalar = {
+    id?: boolean
+    umidade?: boolean
+    temperatura?: boolean
+    velocidadeVento?: boolean
+    direcaoVento?: boolean
+    quantidadeChuva?: boolean
+    dataMedicao?: boolean
+    stationId?: boolean
+  }
+
+  export type WeatherDataOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "umidade" | "temperatura" | "velocidadeVento" | "direcaoVento" | "quantidadeChuva" | "dataMedicao" | "stationId", ExtArgs["result"]["weatherData"]>
+  export type WeatherDataInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    station?: boolean | StationDefaultArgs<ExtArgs>
+  }
+  export type WeatherDataIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    station?: boolean | StationDefaultArgs<ExtArgs>
+  }
+  export type WeatherDataIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    station?: boolean | StationDefaultArgs<ExtArgs>
+  }
+
+  export type $WeatherDataPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "WeatherData"
+    objects: {
+      station: Prisma.$StationPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      umidade: number
+      temperatura: number
+      velocidadeVento: number
+      direcaoVento: $Enums.WindDirection
+      quantidadeChuva: number
+      dataMedicao: Date
+      stationId: number
+    }, ExtArgs["result"]["weatherData"]>
+    composites: {}
+  }
+
+  type WeatherDataGetPayload<S extends boolean | null | undefined | WeatherDataDefaultArgs> = $Result.GetResult<Prisma.$WeatherDataPayload, S>
+
+  type WeatherDataCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<WeatherDataFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: WeatherDataCountAggregateInputType | true
+    }
+
+  export interface WeatherDataDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['WeatherData'], meta: { name: 'WeatherData' } }
+    /**
+     * Find zero or one WeatherData that matches the filter.
+     * @param {WeatherDataFindUniqueArgs} args - Arguments to find a WeatherData
+     * @example
+     * // Get one WeatherData
+     * const weatherData = await prisma.weatherData.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends WeatherDataFindUniqueArgs>(args: SelectSubset<T, WeatherDataFindUniqueArgs<ExtArgs>>): Prisma__WeatherDataClient<$Result.GetResult<Prisma.$WeatherDataPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one WeatherData that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {WeatherDataFindUniqueOrThrowArgs} args - Arguments to find a WeatherData
+     * @example
+     * // Get one WeatherData
+     * const weatherData = await prisma.weatherData.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends WeatherDataFindUniqueOrThrowArgs>(args: SelectSubset<T, WeatherDataFindUniqueOrThrowArgs<ExtArgs>>): Prisma__WeatherDataClient<$Result.GetResult<Prisma.$WeatherDataPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first WeatherData that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WeatherDataFindFirstArgs} args - Arguments to find a WeatherData
+     * @example
+     * // Get one WeatherData
+     * const weatherData = await prisma.weatherData.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends WeatherDataFindFirstArgs>(args?: SelectSubset<T, WeatherDataFindFirstArgs<ExtArgs>>): Prisma__WeatherDataClient<$Result.GetResult<Prisma.$WeatherDataPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first WeatherData that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WeatherDataFindFirstOrThrowArgs} args - Arguments to find a WeatherData
+     * @example
+     * // Get one WeatherData
+     * const weatherData = await prisma.weatherData.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends WeatherDataFindFirstOrThrowArgs>(args?: SelectSubset<T, WeatherDataFindFirstOrThrowArgs<ExtArgs>>): Prisma__WeatherDataClient<$Result.GetResult<Prisma.$WeatherDataPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more WeatherData that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WeatherDataFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all WeatherData
+     * const weatherData = await prisma.weatherData.findMany()
+     * 
+     * // Get first 10 WeatherData
+     * const weatherData = await prisma.weatherData.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const weatherDataWithIdOnly = await prisma.weatherData.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends WeatherDataFindManyArgs>(args?: SelectSubset<T, WeatherDataFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WeatherDataPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a WeatherData.
+     * @param {WeatherDataCreateArgs} args - Arguments to create a WeatherData.
+     * @example
+     * // Create one WeatherData
+     * const WeatherData = await prisma.weatherData.create({
+     *   data: {
+     *     // ... data to create a WeatherData
+     *   }
+     * })
+     * 
+     */
+    create<T extends WeatherDataCreateArgs>(args: SelectSubset<T, WeatherDataCreateArgs<ExtArgs>>): Prisma__WeatherDataClient<$Result.GetResult<Prisma.$WeatherDataPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many WeatherData.
+     * @param {WeatherDataCreateManyArgs} args - Arguments to create many WeatherData.
+     * @example
+     * // Create many WeatherData
+     * const weatherData = await prisma.weatherData.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends WeatherDataCreateManyArgs>(args?: SelectSubset<T, WeatherDataCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many WeatherData and returns the data saved in the database.
+     * @param {WeatherDataCreateManyAndReturnArgs} args - Arguments to create many WeatherData.
+     * @example
+     * // Create many WeatherData
+     * const weatherData = await prisma.weatherData.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many WeatherData and only return the `id`
+     * const weatherDataWithIdOnly = await prisma.weatherData.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends WeatherDataCreateManyAndReturnArgs>(args?: SelectSubset<T, WeatherDataCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WeatherDataPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a WeatherData.
+     * @param {WeatherDataDeleteArgs} args - Arguments to delete one WeatherData.
+     * @example
+     * // Delete one WeatherData
+     * const WeatherData = await prisma.weatherData.delete({
+     *   where: {
+     *     // ... filter to delete one WeatherData
+     *   }
+     * })
+     * 
+     */
+    delete<T extends WeatherDataDeleteArgs>(args: SelectSubset<T, WeatherDataDeleteArgs<ExtArgs>>): Prisma__WeatherDataClient<$Result.GetResult<Prisma.$WeatherDataPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one WeatherData.
+     * @param {WeatherDataUpdateArgs} args - Arguments to update one WeatherData.
+     * @example
+     * // Update one WeatherData
+     * const weatherData = await prisma.weatherData.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends WeatherDataUpdateArgs>(args: SelectSubset<T, WeatherDataUpdateArgs<ExtArgs>>): Prisma__WeatherDataClient<$Result.GetResult<Prisma.$WeatherDataPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more WeatherData.
+     * @param {WeatherDataDeleteManyArgs} args - Arguments to filter WeatherData to delete.
+     * @example
+     * // Delete a few WeatherData
+     * const { count } = await prisma.weatherData.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends WeatherDataDeleteManyArgs>(args?: SelectSubset<T, WeatherDataDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more WeatherData.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WeatherDataUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many WeatherData
+     * const weatherData = await prisma.weatherData.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends WeatherDataUpdateManyArgs>(args: SelectSubset<T, WeatherDataUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more WeatherData and returns the data updated in the database.
+     * @param {WeatherDataUpdateManyAndReturnArgs} args - Arguments to update many WeatherData.
+     * @example
+     * // Update many WeatherData
+     * const weatherData = await prisma.weatherData.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more WeatherData and only return the `id`
+     * const weatherDataWithIdOnly = await prisma.weatherData.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends WeatherDataUpdateManyAndReturnArgs>(args: SelectSubset<T, WeatherDataUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WeatherDataPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one WeatherData.
+     * @param {WeatherDataUpsertArgs} args - Arguments to update or create a WeatherData.
+     * @example
+     * // Update or create a WeatherData
+     * const weatherData = await prisma.weatherData.upsert({
+     *   create: {
+     *     // ... data to create a WeatherData
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the WeatherData we want to update
+     *   }
+     * })
+     */
+    upsert<T extends WeatherDataUpsertArgs>(args: SelectSubset<T, WeatherDataUpsertArgs<ExtArgs>>): Prisma__WeatherDataClient<$Result.GetResult<Prisma.$WeatherDataPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of WeatherData.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WeatherDataCountArgs} args - Arguments to filter WeatherData to count.
+     * @example
+     * // Count the number of WeatherData
+     * const count = await prisma.weatherData.count({
+     *   where: {
+     *     // ... the filter for the WeatherData we want to count
+     *   }
+     * })
+    **/
+    count<T extends WeatherDataCountArgs>(
+      args?: Subset<T, WeatherDataCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], WeatherDataCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a WeatherData.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WeatherDataAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends WeatherDataAggregateArgs>(args: Subset<T, WeatherDataAggregateArgs>): Prisma.PrismaPromise<GetWeatherDataAggregateType<T>>
+
+    /**
+     * Group by WeatherData.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WeatherDataGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends WeatherDataGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: WeatherDataGroupByArgs['orderBy'] }
+        : { orderBy?: WeatherDataGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, WeatherDataGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWeatherDataGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the WeatherData model
+   */
+  readonly fields: WeatherDataFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for WeatherData.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__WeatherDataClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    station<T extends StationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, StationDefaultArgs<ExtArgs>>): Prisma__StationClient<$Result.GetResult<Prisma.$StationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the WeatherData model
+   */
+  interface WeatherDataFieldRefs {
+    readonly id: FieldRef<"WeatherData", 'Int'>
+    readonly umidade: FieldRef<"WeatherData", 'Float'>
+    readonly temperatura: FieldRef<"WeatherData", 'Float'>
+    readonly velocidadeVento: FieldRef<"WeatherData", 'Float'>
+    readonly direcaoVento: FieldRef<"WeatherData", 'WindDirection'>
+    readonly quantidadeChuva: FieldRef<"WeatherData", 'Float'>
+    readonly dataMedicao: FieldRef<"WeatherData", 'DateTime'>
+    readonly stationId: FieldRef<"WeatherData", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * WeatherData findUnique
+   */
+  export type WeatherDataFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WeatherData
+     */
+    select?: WeatherDataSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WeatherData
+     */
+    omit?: WeatherDataOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WeatherDataInclude<ExtArgs> | null
+    /**
+     * Filter, which WeatherData to fetch.
+     */
+    where: WeatherDataWhereUniqueInput
+  }
+
+  /**
+   * WeatherData findUniqueOrThrow
+   */
+  export type WeatherDataFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WeatherData
+     */
+    select?: WeatherDataSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WeatherData
+     */
+    omit?: WeatherDataOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WeatherDataInclude<ExtArgs> | null
+    /**
+     * Filter, which WeatherData to fetch.
+     */
+    where: WeatherDataWhereUniqueInput
+  }
+
+  /**
+   * WeatherData findFirst
+   */
+  export type WeatherDataFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WeatherData
+     */
+    select?: WeatherDataSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WeatherData
+     */
+    omit?: WeatherDataOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WeatherDataInclude<ExtArgs> | null
+    /**
+     * Filter, which WeatherData to fetch.
+     */
+    where?: WeatherDataWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WeatherData to fetch.
+     */
+    orderBy?: WeatherDataOrderByWithRelationInput | WeatherDataOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for WeatherData.
+     */
+    cursor?: WeatherDataWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WeatherData from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WeatherData.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of WeatherData.
+     */
+    distinct?: WeatherDataScalarFieldEnum | WeatherDataScalarFieldEnum[]
+  }
+
+  /**
+   * WeatherData findFirstOrThrow
+   */
+  export type WeatherDataFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WeatherData
+     */
+    select?: WeatherDataSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WeatherData
+     */
+    omit?: WeatherDataOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WeatherDataInclude<ExtArgs> | null
+    /**
+     * Filter, which WeatherData to fetch.
+     */
+    where?: WeatherDataWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WeatherData to fetch.
+     */
+    orderBy?: WeatherDataOrderByWithRelationInput | WeatherDataOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for WeatherData.
+     */
+    cursor?: WeatherDataWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WeatherData from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WeatherData.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of WeatherData.
+     */
+    distinct?: WeatherDataScalarFieldEnum | WeatherDataScalarFieldEnum[]
+  }
+
+  /**
+   * WeatherData findMany
+   */
+  export type WeatherDataFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WeatherData
+     */
+    select?: WeatherDataSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WeatherData
+     */
+    omit?: WeatherDataOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WeatherDataInclude<ExtArgs> | null
+    /**
+     * Filter, which WeatherData to fetch.
+     */
+    where?: WeatherDataWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WeatherData to fetch.
+     */
+    orderBy?: WeatherDataOrderByWithRelationInput | WeatherDataOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing WeatherData.
+     */
+    cursor?: WeatherDataWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WeatherData from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WeatherData.
+     */
+    skip?: number
+    distinct?: WeatherDataScalarFieldEnum | WeatherDataScalarFieldEnum[]
+  }
+
+  /**
+   * WeatherData create
+   */
+  export type WeatherDataCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WeatherData
+     */
+    select?: WeatherDataSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WeatherData
+     */
+    omit?: WeatherDataOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WeatherDataInclude<ExtArgs> | null
+    /**
+     * The data needed to create a WeatherData.
+     */
+    data: XOR<WeatherDataCreateInput, WeatherDataUncheckedCreateInput>
+  }
+
+  /**
+   * WeatherData createMany
+   */
+  export type WeatherDataCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many WeatherData.
+     */
+    data: WeatherDataCreateManyInput | WeatherDataCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * WeatherData createManyAndReturn
+   */
+  export type WeatherDataCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WeatherData
+     */
+    select?: WeatherDataSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the WeatherData
+     */
+    omit?: WeatherDataOmit<ExtArgs> | null
+    /**
+     * The data used to create many WeatherData.
+     */
+    data: WeatherDataCreateManyInput | WeatherDataCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WeatherDataIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * WeatherData update
+   */
+  export type WeatherDataUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WeatherData
+     */
+    select?: WeatherDataSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WeatherData
+     */
+    omit?: WeatherDataOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WeatherDataInclude<ExtArgs> | null
+    /**
+     * The data needed to update a WeatherData.
+     */
+    data: XOR<WeatherDataUpdateInput, WeatherDataUncheckedUpdateInput>
+    /**
+     * Choose, which WeatherData to update.
+     */
+    where: WeatherDataWhereUniqueInput
+  }
+
+  /**
+   * WeatherData updateMany
+   */
+  export type WeatherDataUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update WeatherData.
+     */
+    data: XOR<WeatherDataUpdateManyMutationInput, WeatherDataUncheckedUpdateManyInput>
+    /**
+     * Filter which WeatherData to update
+     */
+    where?: WeatherDataWhereInput
+    /**
+     * Limit how many WeatherData to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * WeatherData updateManyAndReturn
+   */
+  export type WeatherDataUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WeatherData
+     */
+    select?: WeatherDataSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the WeatherData
+     */
+    omit?: WeatherDataOmit<ExtArgs> | null
+    /**
+     * The data used to update WeatherData.
+     */
+    data: XOR<WeatherDataUpdateManyMutationInput, WeatherDataUncheckedUpdateManyInput>
+    /**
+     * Filter which WeatherData to update
+     */
+    where?: WeatherDataWhereInput
+    /**
+     * Limit how many WeatherData to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WeatherDataIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * WeatherData upsert
+   */
+  export type WeatherDataUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WeatherData
+     */
+    select?: WeatherDataSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WeatherData
+     */
+    omit?: WeatherDataOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WeatherDataInclude<ExtArgs> | null
+    /**
+     * The filter to search for the WeatherData to update in case it exists.
+     */
+    where: WeatherDataWhereUniqueInput
+    /**
+     * In case the WeatherData found by the `where` argument doesn't exist, create a new WeatherData with this data.
+     */
+    create: XOR<WeatherDataCreateInput, WeatherDataUncheckedCreateInput>
+    /**
+     * In case the WeatherData was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<WeatherDataUpdateInput, WeatherDataUncheckedUpdateInput>
+  }
+
+  /**
+   * WeatherData delete
+   */
+  export type WeatherDataDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WeatherData
+     */
+    select?: WeatherDataSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WeatherData
+     */
+    omit?: WeatherDataOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WeatherDataInclude<ExtArgs> | null
+    /**
+     * Filter which WeatherData to delete.
+     */
+    where: WeatherDataWhereUniqueInput
+  }
+
+  /**
+   * WeatherData deleteMany
+   */
+  export type WeatherDataDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which WeatherData to delete
+     */
+    where?: WeatherDataWhereInput
+    /**
+     * Limit how many WeatherData to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * WeatherData without action
+   */
+  export type WeatherDataDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WeatherData
+     */
+    select?: WeatherDataSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WeatherData
+     */
+    omit?: WeatherDataOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WeatherDataInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -3269,6 +4575,20 @@ export namespace Prisma {
   };
 
   export type DataPlueViewScalarFieldEnum = (typeof DataPlueViewScalarFieldEnum)[keyof typeof DataPlueViewScalarFieldEnum]
+
+
+  export const WeatherDataScalarFieldEnum: {
+    id: 'id',
+    umidade: 'umidade',
+    temperatura: 'temperatura',
+    velocidadeVento: 'velocidadeVento',
+    direcaoVento: 'direcaoVento',
+    quantidadeChuva: 'quantidadeChuva',
+    dataMedicao: 'dataMedicao',
+    stationId: 'stationId'
+  };
+
+  export type WeatherDataScalarFieldEnum = (typeof WeatherDataScalarFieldEnum)[keyof typeof WeatherDataScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -3354,6 +4674,20 @@ export namespace Prisma {
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
+
+
+  /**
+   * Reference to a field of type 'WindDirection'
+   */
+  export type EnumWindDirectionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WindDirection'>
+    
+
+
+  /**
+   * Reference to a field of type 'WindDirection[]'
+   */
+  export type ListEnumWindDirectionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WindDirection[]'>
+    
   /**
    * Deep Input Types
    */
@@ -3367,6 +4701,7 @@ export namespace Prisma {
     name?: StringFilter<"Station"> | string
     macAddress?: StringFilter<"Station"> | string
     readings?: DataPlueViewListRelationFilter
+    weatherData?: WeatherDataListRelationFilter
   }
 
   export type StationOrderByWithRelationInput = {
@@ -3374,6 +4709,7 @@ export namespace Prisma {
     name?: SortOrder
     macAddress?: SortOrder
     readings?: DataPlueViewOrderByRelationAggregateInput
+    weatherData?: WeatherDataOrderByRelationAggregateInput
   }
 
   export type StationWhereUniqueInput = Prisma.AtLeast<{
@@ -3384,6 +4720,7 @@ export namespace Prisma {
     NOT?: StationWhereInput | StationWhereInput[]
     name?: StringFilter<"Station"> | string
     readings?: DataPlueViewListRelationFilter
+    weatherData?: WeatherDataListRelationFilter
   }, "id" | "macAddress">
 
   export type StationOrderByWithAggregationInput = {
@@ -3483,10 +4820,83 @@ export namespace Prisma {
     stationId?: IntWithAggregatesFilter<"DataPlueView"> | number
   }
 
+  export type WeatherDataWhereInput = {
+    AND?: WeatherDataWhereInput | WeatherDataWhereInput[]
+    OR?: WeatherDataWhereInput[]
+    NOT?: WeatherDataWhereInput | WeatherDataWhereInput[]
+    id?: IntFilter<"WeatherData"> | number
+    umidade?: FloatFilter<"WeatherData"> | number
+    temperatura?: FloatFilter<"WeatherData"> | number
+    velocidadeVento?: FloatFilter<"WeatherData"> | number
+    direcaoVento?: EnumWindDirectionFilter<"WeatherData"> | $Enums.WindDirection
+    quantidadeChuva?: FloatFilter<"WeatherData"> | number
+    dataMedicao?: DateTimeFilter<"WeatherData"> | Date | string
+    stationId?: IntFilter<"WeatherData"> | number
+    station?: XOR<StationScalarRelationFilter, StationWhereInput>
+  }
+
+  export type WeatherDataOrderByWithRelationInput = {
+    id?: SortOrder
+    umidade?: SortOrder
+    temperatura?: SortOrder
+    velocidadeVento?: SortOrder
+    direcaoVento?: SortOrder
+    quantidadeChuva?: SortOrder
+    dataMedicao?: SortOrder
+    stationId?: SortOrder
+    station?: StationOrderByWithRelationInput
+  }
+
+  export type WeatherDataWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: WeatherDataWhereInput | WeatherDataWhereInput[]
+    OR?: WeatherDataWhereInput[]
+    NOT?: WeatherDataWhereInput | WeatherDataWhereInput[]
+    umidade?: FloatFilter<"WeatherData"> | number
+    temperatura?: FloatFilter<"WeatherData"> | number
+    velocidadeVento?: FloatFilter<"WeatherData"> | number
+    direcaoVento?: EnumWindDirectionFilter<"WeatherData"> | $Enums.WindDirection
+    quantidadeChuva?: FloatFilter<"WeatherData"> | number
+    dataMedicao?: DateTimeFilter<"WeatherData"> | Date | string
+    stationId?: IntFilter<"WeatherData"> | number
+    station?: XOR<StationScalarRelationFilter, StationWhereInput>
+  }, "id">
+
+  export type WeatherDataOrderByWithAggregationInput = {
+    id?: SortOrder
+    umidade?: SortOrder
+    temperatura?: SortOrder
+    velocidadeVento?: SortOrder
+    direcaoVento?: SortOrder
+    quantidadeChuva?: SortOrder
+    dataMedicao?: SortOrder
+    stationId?: SortOrder
+    _count?: WeatherDataCountOrderByAggregateInput
+    _avg?: WeatherDataAvgOrderByAggregateInput
+    _max?: WeatherDataMaxOrderByAggregateInput
+    _min?: WeatherDataMinOrderByAggregateInput
+    _sum?: WeatherDataSumOrderByAggregateInput
+  }
+
+  export type WeatherDataScalarWhereWithAggregatesInput = {
+    AND?: WeatherDataScalarWhereWithAggregatesInput | WeatherDataScalarWhereWithAggregatesInput[]
+    OR?: WeatherDataScalarWhereWithAggregatesInput[]
+    NOT?: WeatherDataScalarWhereWithAggregatesInput | WeatherDataScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"WeatherData"> | number
+    umidade?: FloatWithAggregatesFilter<"WeatherData"> | number
+    temperatura?: FloatWithAggregatesFilter<"WeatherData"> | number
+    velocidadeVento?: FloatWithAggregatesFilter<"WeatherData"> | number
+    direcaoVento?: EnumWindDirectionWithAggregatesFilter<"WeatherData"> | $Enums.WindDirection
+    quantidadeChuva?: FloatWithAggregatesFilter<"WeatherData"> | number
+    dataMedicao?: DateTimeWithAggregatesFilter<"WeatherData"> | Date | string
+    stationId?: IntWithAggregatesFilter<"WeatherData"> | number
+  }
+
   export type StationCreateInput = {
     name: string
     macAddress: string
     readings?: DataPlueViewCreateNestedManyWithoutStationInput
+    weatherData?: WeatherDataCreateNestedManyWithoutStationInput
   }
 
   export type StationUncheckedCreateInput = {
@@ -3494,12 +4904,14 @@ export namespace Prisma {
     name: string
     macAddress: string
     readings?: DataPlueViewUncheckedCreateNestedManyWithoutStationInput
+    weatherData?: WeatherDataUncheckedCreateNestedManyWithoutStationInput
   }
 
   export type StationUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     macAddress?: StringFieldUpdateOperationsInput | string
     readings?: DataPlueViewUpdateManyWithoutStationNestedInput
+    weatherData?: WeatherDataUpdateManyWithoutStationNestedInput
   }
 
   export type StationUncheckedUpdateInput = {
@@ -3507,6 +4919,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     macAddress?: StringFieldUpdateOperationsInput | string
     readings?: DataPlueViewUncheckedUpdateManyWithoutStationNestedInput
+    weatherData?: WeatherDataUncheckedUpdateManyWithoutStationNestedInput
   }
 
   export type StationCreateManyInput = {
@@ -3527,7 +4940,7 @@ export namespace Prisma {
   }
 
   export type DataPlueViewCreateInput = {
-    time: Date | string
+    time?: Date | string
     battery: number
     ConsumoPluviometro?: number | null
     ConsumoVelocidadeVento?: number | null
@@ -3539,7 +4952,7 @@ export namespace Prisma {
 
   export type DataPlueViewUncheckedCreateInput = {
     id?: number
-    time: Date | string
+    time?: Date | string
     battery: number
     ConsumoPluviometro?: number | null
     ConsumoVelocidadeVento?: number | null
@@ -3574,7 +4987,7 @@ export namespace Prisma {
 
   export type DataPlueViewCreateManyInput = {
     id?: number
-    time: Date | string
+    time?: Date | string
     battery: number
     ConsumoPluviometro?: number | null
     ConsumoVelocidadeVento?: number | null
@@ -3603,6 +5016,79 @@ export namespace Prisma {
     ConsumoDirecaoVento?: NullableFloatFieldUpdateOperationsInput | number | null
     ConsumoTemperatura?: NullableFloatFieldUpdateOperationsInput | number | null
     ConsumoUmidade?: NullableFloatFieldUpdateOperationsInput | number | null
+    stationId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type WeatherDataCreateInput = {
+    umidade: number
+    temperatura: number
+    velocidadeVento: number
+    direcaoVento: $Enums.WindDirection
+    quantidadeChuva: number
+    dataMedicao?: Date | string
+    station: StationCreateNestedOneWithoutWeatherDataInput
+  }
+
+  export type WeatherDataUncheckedCreateInput = {
+    id?: number
+    umidade: number
+    temperatura: number
+    velocidadeVento: number
+    direcaoVento: $Enums.WindDirection
+    quantidadeChuva: number
+    dataMedicao?: Date | string
+    stationId: number
+  }
+
+  export type WeatherDataUpdateInput = {
+    umidade?: FloatFieldUpdateOperationsInput | number
+    temperatura?: FloatFieldUpdateOperationsInput | number
+    velocidadeVento?: FloatFieldUpdateOperationsInput | number
+    direcaoVento?: EnumWindDirectionFieldUpdateOperationsInput | $Enums.WindDirection
+    quantidadeChuva?: FloatFieldUpdateOperationsInput | number
+    dataMedicao?: DateTimeFieldUpdateOperationsInput | Date | string
+    station?: StationUpdateOneRequiredWithoutWeatherDataNestedInput
+  }
+
+  export type WeatherDataUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    umidade?: FloatFieldUpdateOperationsInput | number
+    temperatura?: FloatFieldUpdateOperationsInput | number
+    velocidadeVento?: FloatFieldUpdateOperationsInput | number
+    direcaoVento?: EnumWindDirectionFieldUpdateOperationsInput | $Enums.WindDirection
+    quantidadeChuva?: FloatFieldUpdateOperationsInput | number
+    dataMedicao?: DateTimeFieldUpdateOperationsInput | Date | string
+    stationId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type WeatherDataCreateManyInput = {
+    id?: number
+    umidade: number
+    temperatura: number
+    velocidadeVento: number
+    direcaoVento: $Enums.WindDirection
+    quantidadeChuva: number
+    dataMedicao?: Date | string
+    stationId: number
+  }
+
+  export type WeatherDataUpdateManyMutationInput = {
+    umidade?: FloatFieldUpdateOperationsInput | number
+    temperatura?: FloatFieldUpdateOperationsInput | number
+    velocidadeVento?: FloatFieldUpdateOperationsInput | number
+    direcaoVento?: EnumWindDirectionFieldUpdateOperationsInput | $Enums.WindDirection
+    quantidadeChuva?: FloatFieldUpdateOperationsInput | number
+    dataMedicao?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WeatherDataUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    umidade?: FloatFieldUpdateOperationsInput | number
+    temperatura?: FloatFieldUpdateOperationsInput | number
+    velocidadeVento?: FloatFieldUpdateOperationsInput | number
+    direcaoVento?: EnumWindDirectionFieldUpdateOperationsInput | $Enums.WindDirection
+    quantidadeChuva?: FloatFieldUpdateOperationsInput | number
+    dataMedicao?: DateTimeFieldUpdateOperationsInput | Date | string
     stationId?: IntFieldUpdateOperationsInput | number
   }
 
@@ -3638,7 +5124,17 @@ export namespace Prisma {
     none?: DataPlueViewWhereInput
   }
 
+  export type WeatherDataListRelationFilter = {
+    every?: WeatherDataWhereInput
+    some?: WeatherDataWhereInput
+    none?: WeatherDataWhereInput
+  }
+
   export type DataPlueViewOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type WeatherDataOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -3822,6 +5318,101 @@ export namespace Prisma {
     _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type EnumWindDirectionFilter<$PrismaModel = never> = {
+    equals?: $Enums.WindDirection | EnumWindDirectionFieldRefInput<$PrismaModel>
+    in?: $Enums.WindDirection[] | ListEnumWindDirectionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.WindDirection[] | ListEnumWindDirectionFieldRefInput<$PrismaModel>
+    not?: NestedEnumWindDirectionFilter<$PrismaModel> | $Enums.WindDirection
+  }
+
+  export type WeatherDataCountOrderByAggregateInput = {
+    id?: SortOrder
+    umidade?: SortOrder
+    temperatura?: SortOrder
+    velocidadeVento?: SortOrder
+    direcaoVento?: SortOrder
+    quantidadeChuva?: SortOrder
+    dataMedicao?: SortOrder
+    stationId?: SortOrder
+  }
+
+  export type WeatherDataAvgOrderByAggregateInput = {
+    id?: SortOrder
+    umidade?: SortOrder
+    temperatura?: SortOrder
+    velocidadeVento?: SortOrder
+    quantidadeChuva?: SortOrder
+    stationId?: SortOrder
+  }
+
+  export type WeatherDataMaxOrderByAggregateInput = {
+    id?: SortOrder
+    umidade?: SortOrder
+    temperatura?: SortOrder
+    velocidadeVento?: SortOrder
+    direcaoVento?: SortOrder
+    quantidadeChuva?: SortOrder
+    dataMedicao?: SortOrder
+    stationId?: SortOrder
+  }
+
+  export type WeatherDataMinOrderByAggregateInput = {
+    id?: SortOrder
+    umidade?: SortOrder
+    temperatura?: SortOrder
+    velocidadeVento?: SortOrder
+    direcaoVento?: SortOrder
+    quantidadeChuva?: SortOrder
+    dataMedicao?: SortOrder
+    stationId?: SortOrder
+  }
+
+  export type WeatherDataSumOrderByAggregateInput = {
+    id?: SortOrder
+    umidade?: SortOrder
+    temperatura?: SortOrder
+    velocidadeVento?: SortOrder
+    quantidadeChuva?: SortOrder
+    stationId?: SortOrder
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type EnumWindDirectionWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.WindDirection | EnumWindDirectionFieldRefInput<$PrismaModel>
+    in?: $Enums.WindDirection[] | ListEnumWindDirectionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.WindDirection[] | ListEnumWindDirectionFieldRefInput<$PrismaModel>
+    not?: NestedEnumWindDirectionWithAggregatesFilter<$PrismaModel> | $Enums.WindDirection
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumWindDirectionFilter<$PrismaModel>
+    _max?: NestedEnumWindDirectionFilter<$PrismaModel>
+  }
+
   export type DataPlueViewCreateNestedManyWithoutStationInput = {
     create?: XOR<DataPlueViewCreateWithoutStationInput, DataPlueViewUncheckedCreateWithoutStationInput> | DataPlueViewCreateWithoutStationInput[] | DataPlueViewUncheckedCreateWithoutStationInput[]
     connectOrCreate?: DataPlueViewCreateOrConnectWithoutStationInput | DataPlueViewCreateOrConnectWithoutStationInput[]
@@ -3829,11 +5420,25 @@ export namespace Prisma {
     connect?: DataPlueViewWhereUniqueInput | DataPlueViewWhereUniqueInput[]
   }
 
+  export type WeatherDataCreateNestedManyWithoutStationInput = {
+    create?: XOR<WeatherDataCreateWithoutStationInput, WeatherDataUncheckedCreateWithoutStationInput> | WeatherDataCreateWithoutStationInput[] | WeatherDataUncheckedCreateWithoutStationInput[]
+    connectOrCreate?: WeatherDataCreateOrConnectWithoutStationInput | WeatherDataCreateOrConnectWithoutStationInput[]
+    createMany?: WeatherDataCreateManyStationInputEnvelope
+    connect?: WeatherDataWhereUniqueInput | WeatherDataWhereUniqueInput[]
+  }
+
   export type DataPlueViewUncheckedCreateNestedManyWithoutStationInput = {
     create?: XOR<DataPlueViewCreateWithoutStationInput, DataPlueViewUncheckedCreateWithoutStationInput> | DataPlueViewCreateWithoutStationInput[] | DataPlueViewUncheckedCreateWithoutStationInput[]
     connectOrCreate?: DataPlueViewCreateOrConnectWithoutStationInput | DataPlueViewCreateOrConnectWithoutStationInput[]
     createMany?: DataPlueViewCreateManyStationInputEnvelope
     connect?: DataPlueViewWhereUniqueInput | DataPlueViewWhereUniqueInput[]
+  }
+
+  export type WeatherDataUncheckedCreateNestedManyWithoutStationInput = {
+    create?: XOR<WeatherDataCreateWithoutStationInput, WeatherDataUncheckedCreateWithoutStationInput> | WeatherDataCreateWithoutStationInput[] | WeatherDataUncheckedCreateWithoutStationInput[]
+    connectOrCreate?: WeatherDataCreateOrConnectWithoutStationInput | WeatherDataCreateOrConnectWithoutStationInput[]
+    createMany?: WeatherDataCreateManyStationInputEnvelope
+    connect?: WeatherDataWhereUniqueInput | WeatherDataWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -3852,6 +5457,20 @@ export namespace Prisma {
     update?: DataPlueViewUpdateWithWhereUniqueWithoutStationInput | DataPlueViewUpdateWithWhereUniqueWithoutStationInput[]
     updateMany?: DataPlueViewUpdateManyWithWhereWithoutStationInput | DataPlueViewUpdateManyWithWhereWithoutStationInput[]
     deleteMany?: DataPlueViewScalarWhereInput | DataPlueViewScalarWhereInput[]
+  }
+
+  export type WeatherDataUpdateManyWithoutStationNestedInput = {
+    create?: XOR<WeatherDataCreateWithoutStationInput, WeatherDataUncheckedCreateWithoutStationInput> | WeatherDataCreateWithoutStationInput[] | WeatherDataUncheckedCreateWithoutStationInput[]
+    connectOrCreate?: WeatherDataCreateOrConnectWithoutStationInput | WeatherDataCreateOrConnectWithoutStationInput[]
+    upsert?: WeatherDataUpsertWithWhereUniqueWithoutStationInput | WeatherDataUpsertWithWhereUniqueWithoutStationInput[]
+    createMany?: WeatherDataCreateManyStationInputEnvelope
+    set?: WeatherDataWhereUniqueInput | WeatherDataWhereUniqueInput[]
+    disconnect?: WeatherDataWhereUniqueInput | WeatherDataWhereUniqueInput[]
+    delete?: WeatherDataWhereUniqueInput | WeatherDataWhereUniqueInput[]
+    connect?: WeatherDataWhereUniqueInput | WeatherDataWhereUniqueInput[]
+    update?: WeatherDataUpdateWithWhereUniqueWithoutStationInput | WeatherDataUpdateWithWhereUniqueWithoutStationInput[]
+    updateMany?: WeatherDataUpdateManyWithWhereWithoutStationInput | WeatherDataUpdateManyWithWhereWithoutStationInput[]
+    deleteMany?: WeatherDataScalarWhereInput | WeatherDataScalarWhereInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -3874,6 +5493,20 @@ export namespace Prisma {
     update?: DataPlueViewUpdateWithWhereUniqueWithoutStationInput | DataPlueViewUpdateWithWhereUniqueWithoutStationInput[]
     updateMany?: DataPlueViewUpdateManyWithWhereWithoutStationInput | DataPlueViewUpdateManyWithWhereWithoutStationInput[]
     deleteMany?: DataPlueViewScalarWhereInput | DataPlueViewScalarWhereInput[]
+  }
+
+  export type WeatherDataUncheckedUpdateManyWithoutStationNestedInput = {
+    create?: XOR<WeatherDataCreateWithoutStationInput, WeatherDataUncheckedCreateWithoutStationInput> | WeatherDataCreateWithoutStationInput[] | WeatherDataUncheckedCreateWithoutStationInput[]
+    connectOrCreate?: WeatherDataCreateOrConnectWithoutStationInput | WeatherDataCreateOrConnectWithoutStationInput[]
+    upsert?: WeatherDataUpsertWithWhereUniqueWithoutStationInput | WeatherDataUpsertWithWhereUniqueWithoutStationInput[]
+    createMany?: WeatherDataCreateManyStationInputEnvelope
+    set?: WeatherDataWhereUniqueInput | WeatherDataWhereUniqueInput[]
+    disconnect?: WeatherDataWhereUniqueInput | WeatherDataWhereUniqueInput[]
+    delete?: WeatherDataWhereUniqueInput | WeatherDataWhereUniqueInput[]
+    connect?: WeatherDataWhereUniqueInput | WeatherDataWhereUniqueInput[]
+    update?: WeatherDataUpdateWithWhereUniqueWithoutStationInput | WeatherDataUpdateWithWhereUniqueWithoutStationInput[]
+    updateMany?: WeatherDataUpdateManyWithWhereWithoutStationInput | WeatherDataUpdateManyWithWhereWithoutStationInput[]
+    deleteMany?: WeatherDataScalarWhereInput | WeatherDataScalarWhereInput[]
   }
 
   export type StationCreateNestedOneWithoutReadingsInput = {
@@ -3900,6 +5533,32 @@ export namespace Prisma {
     upsert?: StationUpsertWithoutReadingsInput
     connect?: StationWhereUniqueInput
     update?: XOR<XOR<StationUpdateToOneWithWhereWithoutReadingsInput, StationUpdateWithoutReadingsInput>, StationUncheckedUpdateWithoutReadingsInput>
+  }
+
+  export type StationCreateNestedOneWithoutWeatherDataInput = {
+    create?: XOR<StationCreateWithoutWeatherDataInput, StationUncheckedCreateWithoutWeatherDataInput>
+    connectOrCreate?: StationCreateOrConnectWithoutWeatherDataInput
+    connect?: StationWhereUniqueInput
+  }
+
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type EnumWindDirectionFieldUpdateOperationsInput = {
+    set?: $Enums.WindDirection
+  }
+
+  export type StationUpdateOneRequiredWithoutWeatherDataNestedInput = {
+    create?: XOR<StationCreateWithoutWeatherDataInput, StationUncheckedCreateWithoutWeatherDataInput>
+    connectOrCreate?: StationCreateOrConnectWithoutWeatherDataInput
+    upsert?: StationUpsertWithoutWeatherDataInput
+    connect?: StationWhereUniqueInput
+    update?: XOR<XOR<StationUpdateToOneWithWhereWithoutWeatherDataInput, StationUpdateWithoutWeatherDataInput>, StationUncheckedUpdateWithoutWeatherDataInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -4034,8 +5693,41 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedEnumWindDirectionFilter<$PrismaModel = never> = {
+    equals?: $Enums.WindDirection | EnumWindDirectionFieldRefInput<$PrismaModel>
+    in?: $Enums.WindDirection[] | ListEnumWindDirectionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.WindDirection[] | ListEnumWindDirectionFieldRefInput<$PrismaModel>
+    not?: NestedEnumWindDirectionFilter<$PrismaModel> | $Enums.WindDirection
+  }
+
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type NestedEnumWindDirectionWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.WindDirection | EnumWindDirectionFieldRefInput<$PrismaModel>
+    in?: $Enums.WindDirection[] | ListEnumWindDirectionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.WindDirection[] | ListEnumWindDirectionFieldRefInput<$PrismaModel>
+    not?: NestedEnumWindDirectionWithAggregatesFilter<$PrismaModel> | $Enums.WindDirection
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumWindDirectionFilter<$PrismaModel>
+    _max?: NestedEnumWindDirectionFilter<$PrismaModel>
+  }
+
   export type DataPlueViewCreateWithoutStationInput = {
-    time: Date | string
+    time?: Date | string
     battery: number
     ConsumoPluviometro?: number | null
     ConsumoVelocidadeVento?: number | null
@@ -4046,7 +5738,7 @@ export namespace Prisma {
 
   export type DataPlueViewUncheckedCreateWithoutStationInput = {
     id?: number
-    time: Date | string
+    time?: Date | string
     battery: number
     ConsumoPluviometro?: number | null
     ConsumoVelocidadeVento?: number | null
@@ -4062,6 +5754,35 @@ export namespace Prisma {
 
   export type DataPlueViewCreateManyStationInputEnvelope = {
     data: DataPlueViewCreateManyStationInput | DataPlueViewCreateManyStationInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type WeatherDataCreateWithoutStationInput = {
+    umidade: number
+    temperatura: number
+    velocidadeVento: number
+    direcaoVento: $Enums.WindDirection
+    quantidadeChuva: number
+    dataMedicao?: Date | string
+  }
+
+  export type WeatherDataUncheckedCreateWithoutStationInput = {
+    id?: number
+    umidade: number
+    temperatura: number
+    velocidadeVento: number
+    direcaoVento: $Enums.WindDirection
+    quantidadeChuva: number
+    dataMedicao?: Date | string
+  }
+
+  export type WeatherDataCreateOrConnectWithoutStationInput = {
+    where: WeatherDataWhereUniqueInput
+    create: XOR<WeatherDataCreateWithoutStationInput, WeatherDataUncheckedCreateWithoutStationInput>
+  }
+
+  export type WeatherDataCreateManyStationInputEnvelope = {
+    data: WeatherDataCreateManyStationInput | WeatherDataCreateManyStationInput[]
     skipDuplicates?: boolean
   }
 
@@ -4096,15 +5817,47 @@ export namespace Prisma {
     stationId?: IntFilter<"DataPlueView"> | number
   }
 
+  export type WeatherDataUpsertWithWhereUniqueWithoutStationInput = {
+    where: WeatherDataWhereUniqueInput
+    update: XOR<WeatherDataUpdateWithoutStationInput, WeatherDataUncheckedUpdateWithoutStationInput>
+    create: XOR<WeatherDataCreateWithoutStationInput, WeatherDataUncheckedCreateWithoutStationInput>
+  }
+
+  export type WeatherDataUpdateWithWhereUniqueWithoutStationInput = {
+    where: WeatherDataWhereUniqueInput
+    data: XOR<WeatherDataUpdateWithoutStationInput, WeatherDataUncheckedUpdateWithoutStationInput>
+  }
+
+  export type WeatherDataUpdateManyWithWhereWithoutStationInput = {
+    where: WeatherDataScalarWhereInput
+    data: XOR<WeatherDataUpdateManyMutationInput, WeatherDataUncheckedUpdateManyWithoutStationInput>
+  }
+
+  export type WeatherDataScalarWhereInput = {
+    AND?: WeatherDataScalarWhereInput | WeatherDataScalarWhereInput[]
+    OR?: WeatherDataScalarWhereInput[]
+    NOT?: WeatherDataScalarWhereInput | WeatherDataScalarWhereInput[]
+    id?: IntFilter<"WeatherData"> | number
+    umidade?: FloatFilter<"WeatherData"> | number
+    temperatura?: FloatFilter<"WeatherData"> | number
+    velocidadeVento?: FloatFilter<"WeatherData"> | number
+    direcaoVento?: EnumWindDirectionFilter<"WeatherData"> | $Enums.WindDirection
+    quantidadeChuva?: FloatFilter<"WeatherData"> | number
+    dataMedicao?: DateTimeFilter<"WeatherData"> | Date | string
+    stationId?: IntFilter<"WeatherData"> | number
+  }
+
   export type StationCreateWithoutReadingsInput = {
     name: string
     macAddress: string
+    weatherData?: WeatherDataCreateNestedManyWithoutStationInput
   }
 
   export type StationUncheckedCreateWithoutReadingsInput = {
     id?: number
     name: string
     macAddress: string
+    weatherData?: WeatherDataUncheckedCreateNestedManyWithoutStationInput
   }
 
   export type StationCreateOrConnectWithoutReadingsInput = {
@@ -4126,23 +5879,77 @@ export namespace Prisma {
   export type StationUpdateWithoutReadingsInput = {
     name?: StringFieldUpdateOperationsInput | string
     macAddress?: StringFieldUpdateOperationsInput | string
+    weatherData?: WeatherDataUpdateManyWithoutStationNestedInput
   }
 
   export type StationUncheckedUpdateWithoutReadingsInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     macAddress?: StringFieldUpdateOperationsInput | string
+    weatherData?: WeatherDataUncheckedUpdateManyWithoutStationNestedInput
+  }
+
+  export type StationCreateWithoutWeatherDataInput = {
+    name: string
+    macAddress: string
+    readings?: DataPlueViewCreateNestedManyWithoutStationInput
+  }
+
+  export type StationUncheckedCreateWithoutWeatherDataInput = {
+    id?: number
+    name: string
+    macAddress: string
+    readings?: DataPlueViewUncheckedCreateNestedManyWithoutStationInput
+  }
+
+  export type StationCreateOrConnectWithoutWeatherDataInput = {
+    where: StationWhereUniqueInput
+    create: XOR<StationCreateWithoutWeatherDataInput, StationUncheckedCreateWithoutWeatherDataInput>
+  }
+
+  export type StationUpsertWithoutWeatherDataInput = {
+    update: XOR<StationUpdateWithoutWeatherDataInput, StationUncheckedUpdateWithoutWeatherDataInput>
+    create: XOR<StationCreateWithoutWeatherDataInput, StationUncheckedCreateWithoutWeatherDataInput>
+    where?: StationWhereInput
+  }
+
+  export type StationUpdateToOneWithWhereWithoutWeatherDataInput = {
+    where?: StationWhereInput
+    data: XOR<StationUpdateWithoutWeatherDataInput, StationUncheckedUpdateWithoutWeatherDataInput>
+  }
+
+  export type StationUpdateWithoutWeatherDataInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    macAddress?: StringFieldUpdateOperationsInput | string
+    readings?: DataPlueViewUpdateManyWithoutStationNestedInput
+  }
+
+  export type StationUncheckedUpdateWithoutWeatherDataInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    macAddress?: StringFieldUpdateOperationsInput | string
+    readings?: DataPlueViewUncheckedUpdateManyWithoutStationNestedInput
   }
 
   export type DataPlueViewCreateManyStationInput = {
     id?: number
-    time: Date | string
+    time?: Date | string
     battery: number
     ConsumoPluviometro?: number | null
     ConsumoVelocidadeVento?: number | null
     ConsumoDirecaoVento?: number | null
     ConsumoTemperatura?: number | null
     ConsumoUmidade?: number | null
+  }
+
+  export type WeatherDataCreateManyStationInput = {
+    id?: number
+    umidade: number
+    temperatura: number
+    velocidadeVento: number
+    direcaoVento: $Enums.WindDirection
+    quantidadeChuva: number
+    dataMedicao?: Date | string
   }
 
   export type DataPlueViewUpdateWithoutStationInput = {
@@ -4175,6 +5982,35 @@ export namespace Prisma {
     ConsumoDirecaoVento?: NullableFloatFieldUpdateOperationsInput | number | null
     ConsumoTemperatura?: NullableFloatFieldUpdateOperationsInput | number | null
     ConsumoUmidade?: NullableFloatFieldUpdateOperationsInput | number | null
+  }
+
+  export type WeatherDataUpdateWithoutStationInput = {
+    umidade?: FloatFieldUpdateOperationsInput | number
+    temperatura?: FloatFieldUpdateOperationsInput | number
+    velocidadeVento?: FloatFieldUpdateOperationsInput | number
+    direcaoVento?: EnumWindDirectionFieldUpdateOperationsInput | $Enums.WindDirection
+    quantidadeChuva?: FloatFieldUpdateOperationsInput | number
+    dataMedicao?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WeatherDataUncheckedUpdateWithoutStationInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    umidade?: FloatFieldUpdateOperationsInput | number
+    temperatura?: FloatFieldUpdateOperationsInput | number
+    velocidadeVento?: FloatFieldUpdateOperationsInput | number
+    direcaoVento?: EnumWindDirectionFieldUpdateOperationsInput | $Enums.WindDirection
+    quantidadeChuva?: FloatFieldUpdateOperationsInput | number
+    dataMedicao?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WeatherDataUncheckedUpdateManyWithoutStationInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    umidade?: FloatFieldUpdateOperationsInput | number
+    temperatura?: FloatFieldUpdateOperationsInput | number
+    velocidadeVento?: FloatFieldUpdateOperationsInput | number
+    direcaoVento?: EnumWindDirectionFieldUpdateOperationsInput | $Enums.WindDirection
+    quantidadeChuva?: FloatFieldUpdateOperationsInput | number
+    dataMedicao?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

@@ -138,6 +138,17 @@ exports.Prisma.DataPlueViewScalarFieldEnum = {
   stationId: 'stationId'
 };
 
+exports.Prisma.WeatherDataScalarFieldEnum = {
+  id: 'id',
+  umidade: 'umidade',
+  temperatura: 'temperatura',
+  velocidadeVento: 'velocidadeVento',
+  direcaoVento: 'direcaoVento',
+  quantidadeChuva: 'quantidadeChuva',
+  dataMedicao: 'dataMedicao',
+  stationId: 'stationId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -152,11 +163,21 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-
+exports.WindDirection = exports.$Enums.WindDirection = {
+  NORTE: 'NORTE',
+  NORDESTE: 'NORDESTE',
+  LESTE: 'LESTE',
+  SUDESTE: 'SUDESTE',
+  SUL: 'SUL',
+  SUDOESTE: 'SUDOESTE',
+  OESTE: 'OESTE',
+  NOROESTE: 'NOROESTE'
+};
 
 exports.Prisma.ModelName = {
   Station: 'Station',
-  DataPlueView: 'DataPlueView'
+  DataPlueView: 'DataPlueView',
+  WeatherData: 'WeatherData'
 };
 
 /**
