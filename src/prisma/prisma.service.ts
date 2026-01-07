@@ -1,5 +1,5 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client/edge';
 import { PrismaPg } from '@prisma/adapter-pg';
 
 @Injectable()
@@ -17,10 +17,10 @@ export class PrismaService
 
   async onModuleInit() {
     try {
-      await this.$connect(); // ✅ NÃO use $queryRaw
+      await this.$connect();
       Logger.log('Conectado ao database');
     } catch (error) {
-      Logger.error('Não conectado ao database', error);
+      Logger.error('Erro ao conectar ao database', error);
       throw error;
     }
   }
