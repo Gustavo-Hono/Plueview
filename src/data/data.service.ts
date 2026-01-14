@@ -18,6 +18,8 @@ export class DataService {
         velocidadeVento: dto.velocidadeVento,
         direcaoVento: dto.direcaoVento,
         quantidadeChuva: dto.quantidadeChuva,
+        latitude: dto.latitude,
+        longitude: dto.longitude,
         dataMedicao: dto.dataMedicao
           ? new Date(dto.dataMedicao)
           : undefined,
@@ -35,7 +37,7 @@ export class DataService {
   async findAll() {
     return this.prisma.weatherData.findMany({
       orderBy: {
-        dataMedicao: 'desc',
+        id: 'desc',
       },
       include: {
         station: true,
@@ -75,6 +77,8 @@ export class DataService {
         velocidadeVento: dto.velocidadeVento,
         direcaoVento: dto.direcaoVento,
         quantidadeChuva: dto.quantidadeChuva,
+        latitude: dto.latitude,
+        longitude: dto.longitude,
         dataMedicao: dto.dataMedicao
           ? new Date(dto.dataMedicao)
           : undefined,

@@ -1,4 +1,4 @@
-import { IsNumber, IsEnum, Min, IsInt } from 'class-validator';
+import { IsNumber, IsEnum, Min, IsInt, Max } from 'class-validator';
 import { WindDirection } from '../enum/wind.direction';
 
 export class CreateDatumDto {
@@ -24,4 +24,14 @@ export class CreateDatumDto {
   stationId: number;
 
   dataMedicao?: string;
+
+  @IsNumber()
+  @Min(-90)
+  @Max(90)
+  latitude: number;
+
+  @IsNumber()
+  @Min(-180)
+  @Max(180)
+  longitude: number;
 }

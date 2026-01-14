@@ -43,6 +43,8 @@ model WeatherData {
   direcaoVento    WindDirection
   quantidadeChuva Float
   dataMedicao     DateTime      @default(now())
+  latitude        Float
+  longitude       Float
   stationId       Int
   id              Int           @id @default(autoincrement())
   station         Station       @relation(fields: [stationId], references: [id], onDelete: Cascade)
