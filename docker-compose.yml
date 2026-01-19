@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: plueview-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-plueview}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-plueview123}
+      POSTGRES_DB: ${POSTGRES_DB:-plueview}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - plueview-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-plueview}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # NestJS Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: plueview-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-plueview}:${POSTGRES_PASSWORD:-plueview123}@postgres:5432/${POSTGRES_DB:-plueview}?schema=public
+      DIRECT_URL: postgresql://${POSTGRES_USER:-plueview}:${POSTGRES_PASSWORD:-plueview123}@postgres:5432/${POSTGRES_DB:-plueview}?schema=public
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - plueview-network
+    command: sh -c "npx prisma migrate deploy && npm run start:prod"
+
+volumes:
+  postgres_data:
+
+
+networks:
+  plueview-network:
+    driver: bridge
