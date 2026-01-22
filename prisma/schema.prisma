@@ -39,8 +39,8 @@ model DataPlueView {
 model WeatherData {
   umidade         Float
   temperatura     Float
-  velocidadeVento Float
-  direcaoVento    WindDirection
+  velocidadeVento Float?
+  direcaoVento    WindDirection?
   quantidadeChuva Float
   dataMedicao     DateTime      @default(now())
   latitude        Float

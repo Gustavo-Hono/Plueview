@@ -22,13 +22,15 @@ export class CreateDatumDto {
   @IsNumber()
   temperatura: number;
 
+  @IsOptional()
   @Type(() => Number)
   @IsNumber()
   @Min(0)
-  velocidadeVento: number;
+  velocidadeVento?: number;
 
+  @IsOptional()
   @IsEnum(WindDirection)
-  direcaoVento: WindDirection;
+  direcaoVento?: WindDirection;
 
   @Type(() => Number)
   @IsNumber()

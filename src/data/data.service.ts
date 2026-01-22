@@ -11,24 +11,30 @@ export class DataService {
      CREATE
   ========================= */
   async create(dto: CreateDatumDto) {
-    return this.prisma.weatherData.create({
-      data: {
-        umidade: dto.umidade,
-        temperatura: dto.temperatura,
-        velocidadeVento: dto.velocidadeVento,
-        direcaoVento: dto.direcaoVento,
-        quantidadeChuva: dto.quantidadeChuva,
-        latitude: dto.latitude,
-        longitude: dto.longitude,
-        dataMedicao: dto.dataMedicao
-          ? new Date(dto.dataMedicao)
-          : undefined,
-
-        station: {
-          connect: { id: dto.stationId },
-        },
+    const data: any = {
+      umidade: dto.umidade,
+      temperatura: dto.temperatura,
+      quantidadeChuva: dto.quantidadeChuva,
+      latitude: dto.latitude,
+      longitude: dto.longitude,
+      station: {
+        connect: { id: dto.stationId },
       },
-    });
+    };
+
+    if (dto.velocidadeVento !== undefined) {
+      data.velocidadeVento = dto.velocidadeVento;
+    }
+
+    if (dto.direcaoVento !== undefined) {
+      data.direcaoVento = dto.direcaoVento;
+    }
+
+    if (dto.dataMedicao) {
+      data.dataMedicao = new Date(dto.dataMedicao);
+    }
+
+    return this.prisma.weatherData.create({ data });
   }
 
   /* =========================
@@ -72,16 +78,22 @@ export class DataService {
     return this.prisma.weatherData.update({
       where: { id },
       data: {
-        umidade: dto.umidade,
-        temperatura: dto.temperatura,
-        velocidadeVento: dto.velocidadeVento,
-        direcaoVento: dto.direcaoVento,
-        quantidadeChuva: dto.quantidadeChuva,
-        latitude: dto.latitude,
-        longitude: dto.longitude,
-        dataMedicao: dto.dataMedicao
-          ? new Date(dto.dataMedicao)
-          : undefined,
+        ...(dto.umidade !== undefined && { umidade: dto.umidade }),
+        ...(dto.temperatura !== undefined && { temperatura: dto.temperatura }),
+        ...(dto.velocidadeVento !== undefined && {
+          velocidadeVento: dto.velocidadeVento,
+        }),
+        ...(dto.direcaoVento !== undefined && {
+          direcaoVento: dto.direcaoVento,
+        }),
+        ...(dto.quantidadeChuva !== undefined && {
+          quantidadeChuva: dto.quantidadeChuva,
+        }),
+        ...(dto.latitude !== undefined && { latitude: dto.latitude }),
+        ...(dto.longitude !== undefined && { longitude: dto.longitude }),
+        ...(dto.dataMedicao !== undefined && {
+          dataMedicao: new Date(dto.dataMedicao),
+        }),
       },
     });
   }
